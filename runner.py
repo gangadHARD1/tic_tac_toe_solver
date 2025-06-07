@@ -20,7 +20,7 @@ moveFont = pygame.font.SysFont("Arial", 60)
 user = None
 board = ttt.initial_state()
 ai_turn = False
-player = "X"
+
 while True:
 
     for event in pygame.event.get():
@@ -90,8 +90,7 @@ while True:
             tiles.append(row)
 
         game_over = ttt.terminal(board)
-        
-        #print(player, "&&&&&&&&&&",board)
+        player = ttt.player(board)
 
         # Show title
         if game_over:
@@ -101,7 +100,6 @@ while True:
             else:
                 title = f"Game Over: {winner} wins."
         elif user == player:
-            #time.sleep(0.5)
             title = f"Play as {user}"
         else:
             title = f"Computer thinking..."
@@ -114,11 +112,8 @@ while True:
         if user != player and not game_over:
             if ai_turn:
                 time.sleep(0.5)
-                move = ttt.minimax(board,player)
-                board = ttt.result(board, move,player)
-                #print("move madeee")
-                player = ttt.player()
-                #print("player after move",player)
+                move = ttt.minimax(board)
+                board = ttt.result(board, move)
                 ai_turn = False
             else:
                 ai_turn = True
@@ -126,13 +121,11 @@ while True:
         # Check for a user move
         click, _, _ = pygame.mouse.get_pressed()
         if click == 1 and user == player and not game_over:
-            print("here")
             mouse = pygame.mouse.get_pos()
             for i in range(3):
                 for j in range(3):
                     if (board[i][j] == ttt.EMPTY and tiles[i][j].collidepoint(mouse)):
-                        board = ttt.result(board, (i, j),player)
-                        player = ttt.player()
+                        board = ttt.result(board, (i, j))
 
         if game_over:
             againButton = pygame.Rect(width / 3, height - 65, width / 3, 50)

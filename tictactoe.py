@@ -8,7 +8,7 @@ import copy
 X = "X"
 O = "O"
 EMPTY = None
-count=1
+#count=1
 
 
 
@@ -23,18 +23,18 @@ def initial_state():
             [EMPTY, EMPTY, EMPTY]]
 
 
-def player():
-    global count
+def player(board):
+    '''global count
     if count %2==0:
         count+=1
         return "X"
     else:
         count+=1
-        return "O"
+        return "O"'''
     
-    '''x_count = sum(row.count("X") for row in board)
+    x_count = sum(row.count("X") for row in board)
     o_count = sum(row.count("O") for row in board)
-    return "X" if x_count == o_count else "O"'''
+    return "X" if x_count == o_count else "O"
     
     raise NotImplementedError
 
@@ -53,12 +53,13 @@ def actions(board):
     raise NotImplementedError
 
 
-def result(board, action,player):
+def result(board, action):
+    plyer= player(board)
     i, j = action
     if board[i][j] != EMPTY:
         raise ValueError("Invalid action")
     new_board = copy.deepcopy(board)
-    new_board[i][j] = player
+    new_board[i][j] = plyer
     return new_board
 
     raise NotImplementedError
@@ -106,10 +107,11 @@ def utility(board):
    
 
 
-def minimax(board,player):
+def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    plyer = player(board)
     def minmove(board,prune_val):
          if terminal(board)==True:
              return utility(board)
@@ -134,7 +136,7 @@ def minimax(board,player):
                   break
          return (v) 
     ans=None           
-    if player=="X":
+    if plyer=="X":
         v=-2
         for poss in actions(board):
             newb=copy.deepcopy(board)
